@@ -33,15 +33,14 @@ resource "aws_launch_configuration" "frontend_launch_config" {
 # Create Auto Scaling Group
 resource "aws_autoscaling_group" "asg" {
   name                 = "tf-task-asg"
-  desired_capacity     = 2
-  max_size             = 2
-  min_size             = 2
+  max_size             = var.asg_capacity
+  min_size             = var.asg_capacity
+  desired_capacity     = var.asg_capacity
   force_delete         = true
-  depends_on           = [aws_lb.alb]
-  target_group_arns    = ["${aws_lb_target_group.tg.arn}"]
+  target_group_arns    = var.alb_target_group_arns
   health_check_type    = "EC2"
   launch_configuration = aws_launch_configuration.frontend_launch_config.name
-  vpc_zone_identifier  = ["${aws_subnet.private_subnet_1.id}", "${aws_subnet.private_subnet_2.id}"]
+  vpc_zone_identifier  = var.private_subnet_ids
 
   tag {
     key                 = "Name"
