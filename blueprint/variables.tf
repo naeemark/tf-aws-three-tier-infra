@@ -55,4 +55,9 @@ variable "frontend_instance_type" {
   type        = string
   default     = "t2.micro"
 }
+variable "bastion_key_name" {
+  description = "Instance connection key name"
+  type        = string
+  default     = "devops-vm-keypair-2"
+}
 

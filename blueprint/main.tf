@@ -34,12 +34,29 @@ module "load_balancer" {
   ]
 }
 
+# Backend
+module "backend" {
+  source             = "./modules/backend"
+  ami_id             = var.backend_ami_id
+  instance_type      = var.backend_instance_type
+  security_group_ids = [module.security_groups.backend_sg_id]
+  private_subnet_ids = [module.network.private_subnet_1_id, module.network.private_subnet_2_id]
+  user_data_script   = filebase64("${path.module}/../scripts/init_backend_server.sh")
+
+  depends_on = [
+    module.network,
+    module.security_groups
+  ]
+}
+
+
+
 # Frontend (Autoscalling Group)
 module "frontend" {
   source                = "./modules/frontend"
   ami_id                = var.frontend_ami_id
   instance_type         = var.frontend_instance_type
-  security_group_ids    = ["${module.security_groups.frontend_sg_id}"]
+  security_group_ids    = [module.security_groups.frontend_sg_id]
   alb_target_group_arns = [module.load_balancer.alb_target_group_arn]
   private_subnet_ids    = [module.network.private_subnet_1_id, module.network.private_subnet_2_id]
   user_data_script      = filebase64("${path.module}/../scripts/init_frontend_server.sh")
@@ -48,5 +65,23 @@ module "frontend" {
     module.network,
     module.security_groups,
     module.load_balancer
+  ]
+}
+
+
+###########################################################
+# Bastion Configs [Temporary - To test in VPC]
+###########################################################
+module "bastion" {
+  source             = "./modules/bastion"
+  ami_id             = var.backend_ami_id
+  instance_type      = var.backend_instance_type
+  security_group_ids = [module.security_groups.bastion_sg_id]
+  public_subnet_id   = module.network.public_subnet_1_id
+  bastion_key_name   = var.bastion_key_name
+
+  depends_on = [
+    module.network,
+    module.security_groups
   ]
 }
