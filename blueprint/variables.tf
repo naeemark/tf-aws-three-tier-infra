@@ -8,7 +8,7 @@ variable "region" {
   description = "AWS region where resources will be provisioned"
 }
 
-
+# Network Resources
 variable "availability_zones" {
   description = "Aailaibility zones in AWS region where resources will be provisioned"
   type        = list(any)
@@ -31,3 +31,28 @@ variable "private_subnet_cidr_blocks" {
   type        = list(string)
   default     = ["10.0.3.0/24", "10.0.4.0/24"]
 }
+
+# Execution Resources
+variable "backend_ami_id" {
+  description = "AMI ID for the backend EC2 instance"
+  type        = string
+  default     = "ami-0b695b365bec60938"
+}
+
+variable "backend_instance_type" {
+  description = "Instance type for the backend EC2 instance"
+  type        = string
+  default     = "t2.micro"
+}
+
+variable "frontend_ami_id" {
+  description = "AMI ID for the frontend EC2 instances"
+  type        = string
+  default     = "ami-0b695b365bec60938"
+}
+variable "frontend_instance_type" {
+  description = "Instance type for the frontend EC2 instances"
+  type        = string
+  default     = "t2.micro"
+}
+
