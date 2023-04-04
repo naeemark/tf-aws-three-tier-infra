@@ -20,8 +20,6 @@ resource "aws_lb_target_group" "tg" {
   }
 }
 
-
-
 # Create ALB
 resource "aws_lb" "alb" {
   name               = "tf-task-alb"

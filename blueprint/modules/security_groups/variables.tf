@@ -19,3 +19,21 @@ variable "frontend_sg_description" {
   type    = string
   default = "sg for frontend"
 }
+variable "backend_sg_name" {
+  type    = string
+  default = "backend_sg"
+}
+
+variable "backend_sg_description" {
+  type    = string
+  default = "sg for backend"
+}
+variable "bastion_sg_name" {
+  type    = string
+  default = "bastion-sg"
+}
+
+variable "bastion_sg_description" {
+  type    = string
+  default = "sg for bastion"
+}

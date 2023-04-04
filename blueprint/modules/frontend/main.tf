@@ -9,6 +9,7 @@ resource "aws_launch_configuration" "frontend_launch_config" {
   instance_type   = var.instance_type
   security_groups = var.security_group_ids
   user_data       = var.user_data_script
+  key_name        = "devops-vm-keypair-2" # temp
 
   root_block_device {
     volume_type = "gp2"
