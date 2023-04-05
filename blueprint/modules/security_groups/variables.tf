@@ -30,9 +30,9 @@ variable "database_sg_description" {
 }
 
 variable "database_instance_port" {
-  type    = number
-  default = 5432
+  description = "Should be provided from outside"
 }
+
 variable "backend_sg_name" {
   type    = string
   default = "backend_sg"

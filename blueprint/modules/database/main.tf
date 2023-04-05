@@ -15,13 +15,14 @@ resource "aws_db_subnet_group" "db_subnet_group" {
 
 # Create RDS Instance
 resource "aws_db_instance" "rds" {
-  identifier              = "tf-tast-database"
+  identifier              = "tf-task-database"
   instance_class          = var.instance_class
   allocated_storage       = var.storage_allocation
   storage_type            = var.storage_type
   engine                  = var.db_engine
   engine_version          = var.db_engine_version
   name                    = var.db_name
+  port                    = var.db_port
   username                = var.db_user_name
   password                = var.db_password
   skip_final_snapshot     = true

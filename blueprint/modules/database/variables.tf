@@ -1,6 +1,7 @@
 
 variable "private_subnet_ids" {}
 variable "security_group_ids" {}
+variable "db_port" {}
 
 # Default Configuration for database, should be provisioned
 variable "instance_class" {
@@ -18,35 +19,35 @@ variable "storage_allocation" {
 variable "storage_type" {
   description = "Databas storage type"
   type        = string
-  default     = "standard"
+  default     = "gp2"
 }
 
 variable "db_engine" {
   description = "Databas Engine"
   type        = string
-  default     = "postgres"
+  default     = "mysql"
 }
 
 variable "db_engine_version" {
   description = "Databas Engine Version"
-  type        = number
-  default     = 12
+  type        = string
+  default     = "5.7"
 }
 
 variable "db_name" {
   description = "Databas Name"
   type        = string
-  default     = "postgres"
+  default     = "tf_task_db"
 }
 
 variable "db_user_name" {
   description = "Databas User Name"
   type        = string
-  default     = "postgres"
+  default     = "admin"
 }
 
 variable "db_password" {
   description = "Databas User Password"
   type        = string
-  default     = "postgres"
+  default     = "passw0rd"
 }

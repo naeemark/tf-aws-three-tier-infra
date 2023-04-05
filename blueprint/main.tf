@@ -13,8 +13,9 @@ module "network" {
 
 # Setup Security Groups
 module "security_groups" {
-  source = "./modules/security_groups"
-  vpc_id = module.network.vpc_id
+  source                 = "./modules/security_groups"
+  vpc_id                 = module.network.vpc_id
+  database_instance_port = var.database_instance_port
 
   depends_on = [
     module.network
@@ -39,6 +40,7 @@ module "database" {
   source             = "./modules/database"
   security_group_ids = [module.security_groups.backend_sg_id]
   private_subnet_ids = [module.network.private_subnet_1_id, module.network.private_subnet_2_id]
+  db_port            = var.database_instance_port
 
   depends_on = [
     module.network,
