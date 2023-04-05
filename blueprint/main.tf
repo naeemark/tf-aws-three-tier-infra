@@ -38,7 +38,7 @@ module "load_balancer" {
 # Database
 module "database" {
   source             = "./modules/database"
-  security_group_ids = [module.security_groups.backend_sg_id]
+  security_group_ids = [module.security_groups.database_sg_id]
   private_subnet_ids = [module.network.private_subnet_1_id, module.network.private_subnet_2_id]
   db_port            = var.database_instance_port
 
