@@ -33,6 +33,13 @@ variable "private_subnet_cidr_blocks" {
   default     = ["10.0.3.0/24", "10.0.4.0/24"]
 }
 
+# Database Service Port
+variable "database_instance_port" {
+  description = "RDS Database Server port"
+  type        = number
+  default     = 3306
+}
+
 # Execution Resources
 variable "backend_ami_id" {
   description = "AMI ID for the backend EC2 instance"

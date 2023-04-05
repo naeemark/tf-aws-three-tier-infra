@@ -9,6 +9,7 @@ resource "aws_instance" "bastion" {
   vpc_security_group_ids      = var.security_group_ids
   associate_public_ip_address = true
   key_name                    = var.bastion_key_name
+  user_data                   = var.user_data_script
 
   tags = {
     Name  = "tf-task-bastion"
