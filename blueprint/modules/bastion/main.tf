@@ -10,10 +10,6 @@ resource "aws_instance" "bastion" {
   associate_public_ip_address = true
   key_name                    = var.bastion_key_name
   user_data                   = var.user_data_script
-
-  tags = {
-    Name  = "tf-task-bastion"
-    Owner = "ccs_it"
-  }
+  tags                        = merge({ Name = "tf-task-bastion" }, var.tags)
 }
 

@@ -5,6 +5,7 @@
 resource "aws_s3_bucket" "terraform_state_bucket" {
   bucket        = "tf-task-tfstate-bucket"
   force_destroy = true
+  tags          = var.tags
 }
 
 resource "aws_s3_bucket_versioning" "terraform_bucket_versioning" {
@@ -27,6 +28,7 @@ resource "aws_dynamodb_table" "terraform_locks_table" {
   name         = "tf-task-state-locking-table"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "LockID"
+  tags         = var.tags
   attribute {
     name = "LockID"
     type = "S"

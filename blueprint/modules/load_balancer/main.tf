@@ -27,11 +27,7 @@ resource "aws_lb" "alb" {
   load_balancer_type = "application"
   security_groups    = var.security_group_ids
   subnets            = var.public_subnet_ids
-
-  tags = {
-    Name    = "tf-task-alb"
-    Project = "tf-task"
-  }
+  tags               = merge({ Name = "tf-task-alb" }, var.tags)
 }
 
 # Create ALB Listener 
@@ -43,4 +39,5 @@ resource "aws_lb_listener" "frontend_listener" {
     type             = "forward"
     target_group_arn = aws_lb_target_group.tg.arn
   }
+  tags = merge({ Name = "tf-task-alb-listener" }, var.tags)
 }

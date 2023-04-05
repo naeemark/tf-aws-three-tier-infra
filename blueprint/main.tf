@@ -2,6 +2,10 @@ provider "aws" {
   region = var.region
 }
 
+locals {
+  tags = merge({ Env = var.tf_env }, var.tags)
+}
+
 # Setup Network Resources
 module "network" {
   source                     = "./modules/network"
@@ -9,6 +13,7 @@ module "network" {
   availability_zones         = var.availability_zones
   public_subnet_cidr_blocks  = var.public_subnet_cidr_blocks
   private_subnet_cidr_blocks = var.private_subnet_cidr_blocks
+  tags                       = local.tags
 }
 
 # Setup Security Groups
@@ -16,6 +21,7 @@ module "security_groups" {
   source                 = "./modules/security_groups"
   vpc_id                 = module.network.vpc_id
   database_instance_port = var.database_instance_port
+  tags                   = local.tags
 
   depends_on = [
     module.network
@@ -28,6 +34,7 @@ module "load_balancer" {
   vpc_id             = module.network.vpc_id
   security_group_ids = [module.security_groups.alb_sg_id]
   public_subnet_ids  = [module.network.public_subnet_1_id, module.network.public_subnet_2_id]
+  tags               = local.tags
 
   depends_on = [
     module.network,
@@ -41,6 +48,7 @@ module "database" {
   security_group_ids = [module.security_groups.database_sg_id]
   private_subnet_ids = [module.network.private_subnet_1_id, module.network.private_subnet_2_id]
   db_port            = var.database_instance_port
+  tags               = local.tags
 
   depends_on = [
     module.network,
@@ -57,6 +65,7 @@ module "backend" {
   private_subnet_ids = [module.network.private_subnet_1_id, module.network.private_subnet_2_id]
   database_endpoint  = module.database.endpoint
   user_data_script   = filebase64("${path.module}/../scripts/init_backend_server.sh")
+  tags               = local.tags
 
   depends_on = [
     module.network,
@@ -75,6 +84,7 @@ module "frontend" {
   private_subnet_ids    = [module.network.private_subnet_1_id, module.network.private_subnet_2_id]
   user_data_script      = filebase64("${path.module}/../scripts/init_frontend_server.sh")
   backend_private_ip    = module.backend.private_ip
+  tags                  = local.tags
 
   depends_on = [
     module.network,
@@ -99,6 +109,7 @@ module "bastion" {
   database_endpoint  = module.database.endpoint
   backend_private_ip = module.backend.private_ip
   backend_public_ip  = module.backend.public_ip
+  tags               = local.tags
 
   depends_on = [
     module.network,

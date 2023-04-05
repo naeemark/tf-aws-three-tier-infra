@@ -1,4 +1,5 @@
 
+variable "tags" {}
 variable "private_subnet_ids" {}
 variable "security_group_ids" {}
 variable "db_port" {}

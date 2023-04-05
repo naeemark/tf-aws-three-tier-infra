@@ -31,9 +31,6 @@ resource "aws_db_instance" "rds" {
   multi_az                = true
   db_subnet_group_name    = aws_db_subnet_group.db_subnet_group.name
   vpc_security_group_ids  = var.security_group_ids
-
-  tags = {
-    Owner = "ccs_it"
-  }
+  tags                    = var.tags
 }
 
