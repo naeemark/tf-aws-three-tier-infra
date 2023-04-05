@@ -1,4 +1,4 @@
-# tf-aws-three-tier-infra
+# Terraform Three Tier Infrasture on AWS
 
 [![Terraform Validate and Plan](https://github.com/naeemark/tf-aws-three-tier-infra/actions/workflows/terraform.yml/badge.svg)](https://github.com/naeemark/tf-aws-three-tier-infra/actions/workflows/terraform.yml)
 
