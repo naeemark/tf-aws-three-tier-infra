@@ -19,6 +19,20 @@ variable "frontend_sg_description" {
   type    = string
   default = "sg for frontend"
 }
+variable "database_sg_name" {
+  type    = string
+  default = "database_sg"
+}
+
+variable "database_sg_description" {
+  type    = string
+  default = "sg for database"
+}
+
+variable "database_instance_port" {
+  type    = number
+  default = 5432
+}
 variable "backend_sg_name" {
   type    = string
   default = "backend_sg"
