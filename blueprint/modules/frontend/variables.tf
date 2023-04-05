@@ -9,3 +9,5 @@ variable "asg_capacity" {
   type        = number
   default     = 2
 }
+
+variable "backend_private_ip" {}

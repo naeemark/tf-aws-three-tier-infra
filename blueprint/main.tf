@@ -34,14 +34,11 @@ module "load_balancer" {
   ]
 }
 
-# Backend
-module "backend" {
-  source             = "./modules/backend"
-  ami_id             = var.backend_ami_id
-  instance_type      = var.backend_instance_type
+# Database
+module "database" {
+  source             = "./modules/database"
   security_group_ids = [module.security_groups.backend_sg_id]
   private_subnet_ids = [module.network.private_subnet_1_id, module.network.private_subnet_2_id]
-  user_data_script   = filebase64("${path.module}/../scripts/init_backend_server.sh")
 
   depends_on = [
     module.network,
@@ -49,7 +46,22 @@ module "backend" {
   ]
 }
 
+# Backend
+module "backend" {
+  source             = "./modules/backend"
+  ami_id             = var.backend_ami_id
+  instance_type      = var.backend_instance_type
+  security_group_ids = [module.security_groups.database_sg_id]
+  private_subnet_ids = [module.network.private_subnet_1_id, module.network.private_subnet_2_id]
+  database_endpoint  = module.database.endpoint
+  user_data_script   = filebase64("${path.module}/../scripts/init_backend_server.sh")
 
+  depends_on = [
+    module.network,
+    module.security_groups,
+    module.database
+  ]
+}
 
 # Frontend (Autoscalling Group)
 module "frontend" {
@@ -60,11 +72,13 @@ module "frontend" {
   alb_target_group_arns = [module.load_balancer.alb_target_group_arn]
   private_subnet_ids    = [module.network.private_subnet_1_id, module.network.private_subnet_2_id]
   user_data_script      = filebase64("${path.module}/../scripts/init_frontend_server.sh")
+  backend_private_ip    = module.backend.private_ip
 
   depends_on = [
     module.network,
     module.security_groups,
-    module.load_balancer
+    module.load_balancer,
+    module.backend
   ]
 }
 
@@ -79,9 +93,15 @@ module "bastion" {
   security_group_ids = [module.security_groups.bastion_sg_id]
   public_subnet_id   = module.network.public_subnet_1_id
   bastion_key_name   = var.bastion_key_name
+  user_data_script   = filebase64("${path.module}/../scripts/init_bastion_host.sh")
+  database_endpoint  = module.database.endpoint
+  backend_private_ip = module.backend.private_ip
+  backend_public_ip  = module.backend.public_ip
 
   depends_on = [
     module.network,
-    module.security_groups
+    module.security_groups,
+    module.database,
+    module.backend
   ]
 }
