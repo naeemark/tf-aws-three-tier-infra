@@ -14,6 +14,7 @@ variable "availability_zones" {
   type        = list(any)
   default     = ["us-west-1a", "us-west-1c"]
 }
+
 variable "vpc_cidr_block" {
   description = "CIDR block for the VPC"
   type        = string
@@ -50,11 +51,13 @@ variable "frontend_ami_id" {
   type        = string
   default     = "ami-0b695b365bec60938"
 }
+
 variable "frontend_instance_type" {
   description = "Instance type for the frontend EC2 instances"
   type        = string
   default     = "t2.micro"
 }
+
 variable "bastion_key_name" {
   description = "Instance connection key name"
   type        = string
