@@ -1,5 +1,5 @@
 variable "tf_env" {
-  description = "The environemnts abbrivation"
+  description = "The environemnt name abbrivation"
   type        = string
 }
 
@@ -69,5 +69,14 @@ variable "bastion_key_name" {
   description = "Instance connection key name"
   type        = string
   default     = "devops-vm-keypair-2"
+}
+
+variable "tags" {
+  description = "Custom tags for the Project"
+  type        = map(any)
+  default = {
+    Project = "tf-task"
+    Owner   = "ccs_it"
+  }
 }
 

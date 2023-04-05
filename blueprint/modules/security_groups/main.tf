@@ -23,11 +23,7 @@ resource "aws_security_group" "alb_sg" {
     cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
   }
-
-  tags = {
-    Project = "tf-task"
-    Name    = "tf-task-alb-sg"
-  }
+  tags = merge({ Name = "tf-task-alb-sg" }, var.tags)
 }
 
 # Create security group for frontend
@@ -59,10 +55,7 @@ resource "aws_security_group" "frontend_sg" {
     ipv6_cidr_blocks = ["::/0"]
   }
 
-  tags = {
-    Project = "tf-task"
-    Name    = "tf-task-frontend-sg"
-  }
+  tags = merge({ Name = "tf-task-frontend-sg" }, var.tags)
 }
 
 
@@ -88,10 +81,8 @@ resource "aws_security_group" "database_sg" {
     ipv6_cidr_blocks = ["::/0"]
   }
 
-  tags = {
-    Project = "tf-task"
-    Name    = "tf-task-database-sg"
-  }
+  tags = merge({ Name = "tf-task-database-sg" }, var.tags)
+
 }
 
 # Create security group for backend
@@ -124,10 +115,7 @@ resource "aws_security_group" "backend_sg" {
     ipv6_cidr_blocks = ["::/0"]
   }
 
-  tags = {
-    Project = "tf-task"
-    Name    = "tf-task-backend-sg"
-  }
+  tags = merge({ Name = "tf-task-backend-sg" }, var.tags)
 }
 
 # Bastion Security Group
@@ -160,8 +148,5 @@ resource "aws_security_group" "bastion_sg" {
     ipv6_cidr_blocks = ["::/0"]
   }
 
-  tags = {
-    Project = "tf-task"
-    Name    = "tf-task-bastion-sg"
-  }
+  tags = merge({ Name = "tf-task-bastion-sg" }, var.tags)
 }

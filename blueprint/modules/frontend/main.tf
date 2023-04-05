@@ -48,4 +48,14 @@ resource "aws_autoscaling_group" "asg" {
     value               = "tf-task-frontend"
     propagate_at_launch = true
   }
+  tag {
+    key                 = "Project"
+    value               = "tf-task"
+    propagate_at_launch = true
+  }
+  tag {
+    key                 = "Owner"
+    value               = "ccs_it"
+    propagate_at_launch = true
+  }
 }
