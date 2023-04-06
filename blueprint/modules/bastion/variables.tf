@@ -8,4 +8,5 @@ variable "user_data_script" {}
 variable "database_endpoint" {}
 variable "backend_private_ip" {}
 variable "backend_public_ip" {}
+variable "required_bastion_setup" {}
 

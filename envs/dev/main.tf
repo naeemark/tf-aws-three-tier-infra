@@ -24,7 +24,8 @@ terraform {
 }
 
 module "dev_infra" {
-  source = "../../blueprint"
-  tf_env = var.tf_env
-  region = var.region
+  source                 = "../../blueprint"
+  tf_env                 = var.tf_env
+  region                 = var.region
+  required_bastion_setup = false # Controls Bastion Host Setup
 }
