@@ -1,9 +1,9 @@
 output "bastion_private_ip" {
   description = "private ip address"
-  value       = aws_instance.bastion.private_ip
+  value       = length(aws_instance.bastion) > 0 ? aws_instance.bastion[0].private_ip : "N/A"
 }
 
 output "bastion_public_ip" {
   description = "public ip address"
-  value       = aws_instance.bastion.public_ip
+  value       = length(aws_instance.bastion) > 0 ? aws_instance.bastion[0].public_ip : "N/A"
 }

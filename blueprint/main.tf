@@ -21,6 +21,10 @@ module "security_groups" {
   source                 = "./modules/security_groups"
   vpc_id                 = module.network.vpc_id
   database_instance_port = var.database_instance_port
+  required_bastion_setup = var.required_bastion_setup
+  alb_sg_allow_http      = true
+  frontend_sg_allow_ssh  = false
+  backend_sg_allow_ssh   = false
   tags                   = local.tags
 
   depends_on = [
@@ -99,17 +103,18 @@ module "frontend" {
 # Bastion Configs [Temporary - To test in VPC]
 ###########################################################
 module "bastion" {
-  source             = "./modules/bastion"
-  ami_id             = var.backend_ami_id
-  instance_type      = var.backend_instance_type
-  security_group_ids = [module.security_groups.bastion_sg_id]
-  public_subnet_id   = module.network.public_subnet_1_id
-  bastion_key_name   = var.bastion_key_name
-  user_data_script   = filebase64("${path.module}/../scripts/init_bastion_host.sh")
-  database_endpoint  = module.database.endpoint
-  backend_private_ip = module.backend.private_ip
-  backend_public_ip  = module.backend.public_ip
-  tags               = local.tags
+  source                 = "./modules/bastion"
+  required_bastion_setup = var.required_bastion_setup
+  ami_id                 = var.backend_ami_id
+  instance_type          = var.backend_instance_type
+  security_group_ids     = [module.security_groups.bastion_sg_id]
+  public_subnet_id       = module.network.public_subnet_1_id
+  bastion_key_name       = var.bastion_key_name
+  user_data_script       = filebase64("${path.module}/../scripts/init_bastion_host.sh")
+  database_endpoint      = module.database.endpoint
+  backend_private_ip     = module.backend.private_ip
+  backend_public_ip      = module.backend.public_ip
+  tags                   = local.tags
 
   depends_on = [
     module.network,

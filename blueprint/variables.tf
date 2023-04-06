@@ -65,6 +65,12 @@ variable "frontend_instance_type" {
   default     = "t2.micro"
 }
 
+variable "required_bastion_setup" {
+  description = "Flag to control creation of the bastion host"
+  type        = bool
+  default     = false
+}
+
 variable "bastion_key_name" {
   description = "Instance connection key name"
   type        = string

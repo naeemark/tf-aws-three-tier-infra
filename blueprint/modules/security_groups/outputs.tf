@@ -20,5 +20,5 @@ output "backend_sg_id" {
 
 output "bastion_sg_id" {
   description = "The ID of the bastion_sg"
-  value       = aws_security_group.bastion_sg.id
+  value       = length(aws_security_group.bastion_sg) > 0 ? aws_security_group.bastion_sg[0].id : ""
 }

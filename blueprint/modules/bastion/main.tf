@@ -3,6 +3,7 @@
 # Bastion Configs 
 ###########################################################
 resource "aws_instance" "bastion" {
+  count                       = var.required_bastion_setup ? 1 : 0 # Condition to control Bastion Host Creation
   ami                         = var.ami_id
   instance_type               = var.instance_type
   subnet_id                   = var.public_subnet_id
