@@ -12,5 +12,10 @@ resource "aws_instance" "bastion" {
   key_name                    = var.bastion_key_name
   user_data                   = var.user_data_script
   tags                        = merge({ Name = "tf-task-bastion" }, var.tags)
+
+  #  To pass arguments as vars
+  # user_data_base64 = base64encode("${templatefile("${path.module}/../scripts/init_bastion_host.sh", {
+  #   DB_ENDPOINT = var.database_endpoint
+  # })}")
 }
 
