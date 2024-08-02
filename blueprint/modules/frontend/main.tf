@@ -2,7 +2,7 @@
 # Frontend Resources
 ###########################################################
 
-#Create Launch config
+# Create Launch config
 resource "aws_launch_configuration" "frontend_launch_config" {
   name_prefix     = "frontend-launch-config"
   image_id        = var.ami_id
@@ -32,10 +32,10 @@ resource "aws_launch_configuration" "frontend_launch_config" {
 
 # Create Auto Scaling Group
 resource "aws_autoscaling_group" "asg" {
-  name                 = "tf-task-asg"
-  max_size             = var.asg_capacity
-  min_size             = var.asg_capacity
-  desired_capacity     = var.asg_capacity
+  name                 = var.asg_name
+  max_size             = var.max_asg_capacity
+  min_size             = var.min_asg_capacity
+  desired_capacity     = var.desired_asg_capacity
   force_delete         = true
   target_group_arns    = var.alb_target_group_arns
   health_check_type    = "EC2"
@@ -44,17 +44,17 @@ resource "aws_autoscaling_group" "asg" {
 
   tag {
     key                 = "Name"
-    value               = "tf-task-frontend"
+    value               = "bbeans-frontend"
     propagate_at_launch = true
   }
   tag {
     key                 = "Project"
-    value               = "tf-task"
+    value               = "bbeans"
     propagate_at_launch = true
   }
   tag {
-    key                 = "Owner"
-    value               = "ccs_it"
+    key = "Owner"
+    value = "itadmin"
     propagate_at_launch = true
   }
 }

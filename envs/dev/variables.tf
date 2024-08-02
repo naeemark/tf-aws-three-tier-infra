@@ -6,6 +6,6 @@ variable "tf_env" {
 
 variable "region" {
   type        = string
-  default     = "us-west-1"
+  default     = "ap-southeast-2"
   description = "Default AWS region where resources will be provisioned"
 }

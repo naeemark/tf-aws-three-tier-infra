@@ -3,6 +3,7 @@ variable "tags" {}
 variable "private_subnet_ids" {}
 variable "security_group_ids" {}
 variable "db_port" {}
+variable "required_database_setup" {}
 
 # Default Configuration for database, should be provisioned
 variable "instance_class" {
@@ -33,12 +34,6 @@ variable "db_engine_version" {
   description = "Databas Engine Version"
   type        = string
   default     = "5.7"
-}
-
-variable "db_name" {
-  description = "Databas Name"
-  type        = string
-  default     = "tf_task_db"
 }
 
 variable "db_user_name" {

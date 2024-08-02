@@ -17,3 +17,13 @@ output "database_endpoint" {
   description = "Databas connection endpoint"
   value       = module.database.endpoint
 }
+
+output "private_ips" {
+  description = "Backend Private IPs"
+  value = module.backend.private_ips
+}
+
+output "public_ips" {
+  description = "Backend Public IPs"
+  value = module.backend.public_ips
+}

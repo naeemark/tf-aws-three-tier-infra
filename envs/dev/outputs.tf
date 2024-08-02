@@ -13,3 +13,13 @@ output "database_endpoint" {
   value       = module.dev_infra.database_endpoint
 }
 
+output "private_ips" {
+  description = "Backend Private IPs"
+  value       = module.dev_infra.private_ips
+}
+
+output "public_ips" {
+  description = "Backend Public IPs"
+  value       = module.dev_infra.public_ips
+}
+

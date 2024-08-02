@@ -8,11 +8,10 @@ variable "region" {
   description = "AWS region where resources will be provisioned"
 }
 
-# Network Resources
-variable "availability_zones" {
-  description = "Aailaibility zones in AWS region where resources will be provisioned"
-  type        = list(any)
-  default     = ["us-west-1a", "us-west-1c"]
+variable "profile" {
+  type        = string
+  description = "AWS profile configured in aws-cli"
+  default = "muaksite"
 }
 
 variable "vpc_cidr_block" {
@@ -44,7 +43,7 @@ variable "database_instance_port" {
 variable "backend_ami_id" {
   description = "AMI ID for the backend EC2 instance"
   type        = string
-  default     = "ami-0b695b365bec60938"
+  default     = "ami-0809dd5035d9217b8"
 }
 
 variable "backend_instance_type" {
@@ -56,13 +55,19 @@ variable "backend_instance_type" {
 variable "frontend_ami_id" {
   description = "AMI ID for the frontend EC2 instances"
   type        = string
-  default     = "ami-0b695b365bec60938"
+  default     = "ami-0809dd5035d9217b8"
 }
 
 variable "frontend_instance_type" {
   description = "Instance type for the frontend EC2 instances"
   type        = string
   default     = "t2.micro"
+}
+
+variable "required_database_setup" {
+  description = "Flag to control creation of the database instance"
+  type        = bool
+  default     = false
 }
 
 variable "required_bastion_setup" {
@@ -74,15 +79,15 @@ variable "required_bastion_setup" {
 variable "bastion_key_name" {
   description = "Instance connection key name"
   type        = string
-  default     = "devops-vm-keypair-2"
+  default     = "itadmin-keypair-1"
 }
 
 variable "tags" {
   description = "Custom tags for the Project"
   type        = map(any)
   default = {
-    Project = "tf-task"
-    Owner   = "ccs_it"
+    Project = "bbeans"
+    Owner   = "itadmin"
   }
 }
 

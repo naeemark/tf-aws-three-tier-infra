@@ -4,7 +4,7 @@
 
 # Create Target group
 resource "aws_lb_target_group" "tg" {
-  name     = "tf-task-target-group"
+  name     = "bbeans-target-group"
   port     = 80
   protocol = "HTTP"
   vpc_id   = var.vpc_id
@@ -22,12 +22,12 @@ resource "aws_lb_target_group" "tg" {
 
 # Create ALB
 resource "aws_lb" "alb" {
-  name               = "tf-task-alb"
+  name               = "bbeans-alb"
   internal           = false
   load_balancer_type = "application"
   security_groups    = var.security_group_ids
   subnets            = var.public_subnet_ids
-  tags               = merge({ Name = "tf-task-alb" }, var.tags)
+  tags               = merge({ Name = "bbeans-alb" }, var.tags)
 }
 
 # Create ALB Listener 
@@ -36,7 +36,7 @@ resource "aws_lb_listener" "alb_listener_http" {
   port              = "80"
   protocol          = "HTTP"
   depends_on        = [aws_lb_target_group.tg]
-  tags              = merge({ Name = "tf-task-alb-listener-http" }, var.tags)
+  tags              = merge({ Name = "bbeans-alb-listener-http" }, var.tags)
   default_action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.tg.arn
@@ -53,7 +53,7 @@ resource "aws_lb_listener" "alb_listener_http" {
 #   port              = "443"
 #   protocol          = "HTTPS"
 #   depends_on        = [aws_lb_target_group.tg]
-#   tags              = merge({ Name = "tf-task-alb-listener-http" }, var.tags)
+#   tags              = merge({ Name = "bbeans-alb-listener-http" }, var.tags)
 
 #   default_action {
 #     type             = "forward"

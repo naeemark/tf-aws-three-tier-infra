@@ -15,17 +15,18 @@ terraform {
   ## [ Will work if the resources are already created ]
   #############################################################
   # backend "s3" {
-  #   bucket         = "tf-task-tfstate-bucket"
+  #   bucket         = "bbeans-tfstate-bucket"
   #   key            = "envs/dev/terraform.tfstate"
   #   region         = "us-west-1"
-  #   dynamodb_table = "tf-task-state-locking-table"
+  #   dynamodb_table = "bbeans-state-locking-table"
   #   encrypt        = true
   # }
 }
 
 module "dev_infra" {
-  source                 = "../../blueprint"
-  tf_env                 = var.tf_env
-  region                 = var.region
-  required_bastion_setup = false # Controls Bastion Host Setup
+  source                  = "../../blueprint"
+  tf_env                  = var.tf_env
+  region                  = var.region
+  required_database_setup = false # Controls RDS instance Setup
+  required_bastion_setup  = true  # Controls Bastion Host Setup
 }

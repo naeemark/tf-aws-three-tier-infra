@@ -23,7 +23,7 @@ resource "aws_security_group" "alb_sg" {
     cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
   }
-  tags = merge({ Name = "tf-task-alb-sg" }, var.tags)
+  tags = merge({ Name = "bbeans-alb-sg" }, var.tags)
 }
 
 # Conditional block to allow http over port:80
@@ -60,7 +60,7 @@ resource "aws_security_group" "frontend_sg" {
     ipv6_cidr_blocks = ["::/0"]
   }
 
-  tags = merge({ Name = "tf-task-frontend-sg" }, var.tags)
+  tags = merge({ Name = "bbeans-frontend-sg" }, var.tags)
 }
 
 # Conditional block to open port:22
@@ -97,7 +97,7 @@ resource "aws_security_group" "database_sg" {
     ipv6_cidr_blocks = ["::/0"]
   }
 
-  tags = merge({ Name = "tf-task-database-sg" }, var.tags)
+  tags = merge({ Name = "bbeans-database-sg" }, var.tags)
 
 }
 
@@ -123,7 +123,7 @@ resource "aws_security_group" "backend_sg" {
     ipv6_cidr_blocks = ["::/0"]
   }
 
-  tags = merge({ Name = "tf-task-backend-sg" }, var.tags)
+  tags = merge({ Name = "bbeans-backend-sg" }, var.tags)
 }
 
 # Conditional block to open port:22
@@ -169,5 +169,5 @@ resource "aws_security_group" "bastion_sg" {
     ipv6_cidr_blocks = ["::/0"]
   }
 
-  tags = merge({ Name = "tf-task-bastion-sg" }, var.tags)
+  tags = merge({ Name = "bbeans-bastion-sg" }, var.tags)
 }
