@@ -3,27 +3,22 @@ output "alb_dns" {
   value       = module.load_balancer.alb_dns
 }
 
-output "bastion_private_ip" {
-  description = "private ip address for bastion"
-  value       = module.bastion.bastion_private_ip
+# output "database_endpoint" {
+#   description = "Databas connection endpoint"
+#   value       = module.database.endpoint
+# }
+
+output "bastion_ips" {
+  description = "Bastion IPs"
+  value = "Public: ${module.bastion.public_ip} - Private: ${module.bastion.private_ip}"
 }
 
-output "bastion_public_ip" {
-  description = "public ip address for bastion"
-  value       = module.bastion.bastion_public_ip
+output "backend_ips" {
+  description = "Backend IPs"
+  value = "Public: ${module.backend.public_ips} - Private: ${module.backend.private_ips}"
 }
 
-output "database_endpoint" {
-  description = "Databas connection endpoint"
-  value       = module.database.endpoint
-}
-
-output "private_ips" {
-  description = "Backend Private IPs"
-  value = module.backend.private_ips
-}
-
-output "public_ips" {
-  description = "Backend Public IPs"
-  value = module.backend.public_ips
+output "frontend_ips" {
+  description = "Frontend IPs"
+  value = "Public: ${module.frontend.public_ips} - Private: ${module.frontend.private_ips}"
 }

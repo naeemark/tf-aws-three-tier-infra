@@ -1,15 +1,5 @@
 #!/bin/bash
 
-# Create mount volume for logs
-  sudo su - root
-  mkfs.ext4 /dev/sdf
-  mount -t ext4 /dev/sdf /var/log
-
-# Install & Start nginx server
-  yum search nginx 
-  amazon-linux-extras install nginx1 -y
-  systemctl start nginx
-  systemctl enable nginx
-  
-# Print the hostname which includes instance details on nginx homepage  
-  echo "<body><h1>Hello from Backend @ <i style=color:red;>`hostname -f`</i></h1></body>" > /usr/share/nginx/html/index.html
+mkdir /home/ec2-user/site-content
+echo "<body><center><h1>Hello from Backend @ <i style=color:red;>`hostname -f`</i></h1></center></body>" > /home/ec2-user/site-content/index.html
+docker run -d -p 8000:80 --name nginx -v /home/ec2-user/site-content:/usr/share/nginx/html nginx:latest

@@ -49,7 +49,6 @@ resource "aws_subnet" "private_subnet_2" {
   availability_zone       = data.aws_availability_zones.azs.names[1]
   map_public_ip_on_launch = false
   tags                    = merge({ Name = "bbeans-private-subnet-2" }, var.tags)
-
 }
 
 # Create Internet Gateway
@@ -64,7 +63,7 @@ resource "aws_route_table" "public_subnet_1_rt" {
   vpc_id = aws_vpc.bbeans_vpc.id
 
   route {
-    cidr_block = "0.0.0.0/0"
+    cidr_block = var.anywhere_cidr_block
     gateway_id = aws_internet_gateway.igw.id
   }
 
@@ -116,7 +115,7 @@ resource "aws_route_table" "private_subnet_1_rt" {
   count  = "1"
   vpc_id = aws_vpc.bbeans_vpc.id
   route {
-    cidr_block     = "0.0.0.0/0"
+    cidr_block     = var.anywhere_cidr_block
     nat_gateway_id = aws_nat_gateway.natgateway_1[count.index].id
   }
   tags = merge({ Name = "bbeans-private-subnet-1-route-table" }, var.tags)
@@ -134,7 +133,7 @@ resource "aws_route_table" "private_subnet_2_rt" {
   count  = "1"
   vpc_id = aws_vpc.bbeans_vpc.id
   route {
-    cidr_block     = "0.0.0.0/0"
+    cidr_block     = var.anywhere_cidr_block
     nat_gateway_id = aws_nat_gateway.natgateway_2[count.index].id
   }
   tags = merge({ Name = "bbeans-private-subnet-2-route-table" }, var.tags)

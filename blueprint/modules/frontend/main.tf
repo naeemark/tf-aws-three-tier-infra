@@ -58,3 +58,14 @@ resource "aws_autoscaling_group" "asg" {
     propagate_at_launch = true
   }
 }
+
+# to use a single instance instead of AutoScallingGroup
+# resource "aws_instance" "frontend" {
+#   ami                    = var.ami_id
+#   instance_type          = var.instance_type
+#   subnet_id              = var.private_subnet_ids[0]
+#   vpc_security_group_ids = var.security_group_ids
+#   key_name                    = var.key_pair_name
+#   user_data              = var.user_data_script
+#   tags                   = merge({ Name = "bbeans-frontend" }, var.tags)
+# }

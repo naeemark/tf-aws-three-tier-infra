@@ -2,24 +2,6 @@
 # Application Load Balancer Configs 
 ###########################################################
 
-# Create Target group
-resource "aws_lb_target_group" "tg" {
-  name     = "bbeans-target-group"
-  port     = 80
-  protocol = "HTTP"
-  vpc_id   = var.vpc_id
-  health_check {
-    interval            = 70
-    path                = "/index.html"
-    port                = 80
-    healthy_threshold   = 2
-    unhealthy_threshold = 2
-    timeout             = 60
-    protocol            = "HTTP"
-    matcher             = "200,202"
-  }
-}
-
 # Create ALB
 resource "aws_lb" "alb" {
   name               = "bbeans-alb"
@@ -30,19 +12,88 @@ resource "aws_lb" "alb" {
   tags               = merge({ Name = "bbeans-alb" }, var.tags)
 }
 
-# Create ALB Listener 
-resource "aws_lb_listener" "alb_listener_http" {
-  load_balancer_arn = aws_lb.alb.arn
-  port              = "80"
-  protocol          = "HTTP"
-  depends_on        = [aws_lb_target_group.tg]
-  tags              = merge({ Name = "bbeans-alb-listener-http" }, var.tags)
-  default_action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.tg.arn
+# Create Target group
+resource "aws_lb_target_group" "backend_tg" {
+  name     = "backend-tg"
+  port     = 8000
+  protocol = "HTTP"
+  vpc_id   = var.vpc_id
+  health_check {
+    interval            = 30
+    path                = "/"
+    port                = 8000
+    healthy_threshold   = 2
+    unhealthy_threshold = 2
+    timeout             = 10
+    protocol            = "HTTP"
+    matcher             = "200,202"
   }
 }
 
+resource "aws_lb_target_group" "frontend_tg" {
+  name     = "frontend-tg"
+  port     = 80
+  protocol = "HTTP"
+  vpc_id   = var.vpc_id
+  health_check {
+    interval            = 30
+    path                = "/index.html"
+    port                = 80
+    healthy_threshold   = 2
+    unhealthy_threshold = 2
+    timeout             = 10
+    protocol            = "HTTP"
+    matcher             = "200,202"
+  }
+}
+
+# Create Load Balancer Listener
+resource "aws_lb_listener" "frontend_http" {
+  load_balancer_arn = aws_lb.alb.arn
+  port              = "80"
+  protocol          = "HTTP"
+  depends_on        = [aws_lb_target_group.frontend_tg, aws_lb_target_group.backend_tg]
+  tags              = merge({ Name = "frontend-listener-http" }, var.tags)
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.frontend_tg.arn
+  }
+}
+
+resource "aws_lb_listener" "backend_http" {
+  load_balancer_arn = aws_lb.alb.arn
+  port              = "8000"
+  protocol          = "HTTP"
+  depends_on        = [aws_lb_target_group.frontend_tg, aws_lb_target_group.backend_tg]
+  tags              = merge({ Name = "backend-listener-http" }, var.tags)
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.backend_tg.arn
+  }
+}
+
+# resource "aws_lb_listener_rule" "alb_listener_rule" {
+#   listener_arn = aws_lb_listener.alb_listener_http.arn
+#   tags         = merge({ Name = "backend-rule" }, var.tags)
+#   priority     = 100
+
+#   action {
+#     type             = "forward"
+#     target_group_arn = aws_lb_target_group.backend_alb_tg.arn
+#   }
+
+#   condition {
+#     path_pattern {
+#       values = ["/api/*"]
+#     }
+#   }
+
+#   # condition {
+#   #   host_header {
+#   #     values = ["example.com"]
+#   #   }
+#   # }
+# }
 
 # =========================================================
 # HTTPS mock configuraion

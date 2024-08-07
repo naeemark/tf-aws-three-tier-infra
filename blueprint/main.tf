@@ -23,8 +23,8 @@ module "security_groups" {
   database_instance_port = var.database_instance_port
   required_bastion_setup = var.required_bastion_setup
   alb_sg_allow_http      = true
-  frontend_sg_allow_ssh  = false
-  backend_sg_allow_ssh   = false
+  frontend_sg_allow_ssh  = true
+  backend_sg_allow_ssh   = true
   tags                   = local.tags
 
   depends_on = [
@@ -47,37 +47,35 @@ module "load_balancer" {
 }
 
 # Database
-module "database" {
-  source                  = "./modules/database"
-  required_database_setup = var.required_database_setup
-  security_group_ids      = [module.security_groups.database_sg_id]
-  private_subnet_ids      = [module.network.private_subnet_1_id, module.network.private_subnet_2_id]
-  db_port                 = var.database_instance_port
-  tags                    = local.tags
+# module "database" {
+#   source                  = "./modules/database"
+#   required_database_setup = var.required_database_setup
+#   security_group_ids      = [module.security_groups.database_sg_id]
+#   private_subnet_ids      = [module.network.private_subnet_1_id, module.network.private_subnet_2_id]
+#   db_port                 = var.database_instance_port
+#   tags                    = local.tags
 
-  depends_on = [
-    module.network,
-    module.security_groups
-  ]
-}
+#   depends_on = [
+#     module.network,
+#     module.security_groups
+#   ]
+# }
 
 # Backend
 module "backend" {
   source             = "./modules/backend"
   ami_id             = var.backend_ami_id
   instance_type      = var.backend_instance_type
-  security_group_ids = [module.security_groups.database_sg_id]
-  alb_target_group_arns = [module.load_balancer.alb_target_group_arn]
+  security_group_ids = [module.security_groups.backend_sg_id]
   private_subnet_ids = [module.network.private_subnet_1_id, module.network.private_subnet_2_id]
-  database_endpoint  = module.database.endpoint
+  alb_target_group_arns = [module.load_balancer.backend_alb_target_group_arn]
+  key_pair_name       = var.key_pair_name
   user_data_script   = filebase64("${path.module}/../scripts/init_backend_server.sh")
   tags               = local.tags
-
   depends_on = [
     module.network,
     module.security_groups,
-    module.load_balancer,
-    module.database
+    module.load_balancer
   ]
 }
 
@@ -87,10 +85,11 @@ module "frontend" {
   ami_id                = var.frontend_ami_id
   instance_type         = var.frontend_instance_type
   security_group_ids    = [module.security_groups.frontend_sg_id]
-  alb_target_group_arns = [module.load_balancer.alb_target_group_arn]
   private_subnet_ids    = [module.network.private_subnet_1_id, module.network.private_subnet_2_id]
+  alb_target_group_arns = [module.load_balancer.frontend_alb_target_group_arn]
+  key_pair_name       = var.key_pair_name
   user_data_script      = filebase64("${path.module}/../scripts/init_frontend_server.sh")
-  backend_private_ip   = module.backend.private_ips[0]
+  # backend_private_ip   = module.backend.private_ips
   tags                  = local.tags
 
   depends_on = [
@@ -108,21 +107,17 @@ module "frontend" {
 module "bastion" {
   source                 = "./modules/bastion"
   required_bastion_setup = var.required_bastion_setup
-  ami_id                 = var.backend_ami_id
+  ami_id                 = var.bastion_ami_id
   instance_type          = var.backend_instance_type
   security_group_ids     = [module.security_groups.bastion_sg_id]
   public_subnet_id       = module.network.public_subnet_1_id
-  bastion_key_name       = var.bastion_key_name
+  key_pair_name       = var.key_pair_name
   user_data_script       = filebase64("${path.module}/../scripts/init_bastion_host.sh")
-  database_endpoint      = module.database.endpoint
-  backend_private_ips     = module.backend.private_ips
-  backend_public_ips      = module.backend.public_ips
   tags                   = local.tags
 
   depends_on = [
     module.network,
     module.security_groups,
-    module.database,
     module.backend
   ]
 }

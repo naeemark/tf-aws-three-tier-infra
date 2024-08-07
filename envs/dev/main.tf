@@ -17,7 +17,7 @@ terraform {
   # backend "s3" {
   #   bucket         = "bbeans-tfstate-bucket"
   #   key            = "envs/dev/terraform.tfstate"
-  #   region         = "us-west-1"
+  #   region         = var.region
   #   dynamodb_table = "bbeans-state-locking-table"
   #   encrypt        = true
   # }

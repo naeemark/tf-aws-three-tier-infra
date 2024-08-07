@@ -1,6 +1,12 @@
 variable "tags" {}
 variable "vpc_id" {}
 
+variable "default_cidr_blocks" {
+  description = "Default CIDR Blocks with wildcard access"
+  type = list(string)
+  default = ["0.0.0.0/0"]
+}
+
 variable "alb_sg_name" {
   type    = string
   default = "alb_sg"
@@ -33,11 +39,11 @@ variable "frontend_sg_allow_ssh" {
   default     = false
 }
 
-variable "frontend_sg_inbound_cidr_blocks" {
-  type        = list(string)
-  description = "frontend sg inbound cidr block"
-  default     = ["0.0.0.0/0"]
-}
+# variable "frontend_sg_inbound_cidr_blocks" {
+#   type        = list(string)
+#   description = "frontend sg inbound cidr block"
+#   default     = var.default_cidr_blocks
+# }
 
 variable "database_sg_name" {
   type    = string
@@ -69,11 +75,11 @@ variable "backend_sg_allow_ssh" {
   default     = false
 }
 
-variable "backend_sg_inbound_cidr_blocks" {
-  type        = list(string)
-  description = "backend sg inbound cidr block"
-  default     = ["0.0.0.0/0"]
-}
+# variable "backend_sg_inbound_cidr_blocks" {
+#   type        = list(string)
+#   description = "backend sg inbound cidr block"
+#   default     = var.default_cidr_blocks
+# }
 
 variable "bastion_sg_name" {
   type    = string
@@ -85,10 +91,10 @@ variable "bastion_sg_description" {
   default = "sg for bastion"
 }
 
-variable "bastion_sg_inbound_cidr_blocks" {
-  type        = list(string)
-  description = "sg inbound cidr block"
-  default     = ["0.0.0.0/0"]
-}
+# variable "bastion_sg_inbound_cidr_blocks" {
+#   type        = list(string)
+#   description = "sg inbound cidr block"
+#   default     = var.default_cidr_blocks
+# }
 
 variable "required_bastion_setup" {}

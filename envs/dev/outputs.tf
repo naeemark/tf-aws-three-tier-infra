@@ -3,23 +3,28 @@ output "alb_dns_uri" {
   value       = "http://${module.dev_infra.alb_dns}"
 }
 
-output "bastion_public_ip" {
+output "alb_dns_backend_uri" {
+  description = "Application Load Balancer URI"
+  value       = "http://${module.dev_infra.alb_dns}:8000"
+}
+
+# output "database_endpoint" {
+#   description = "Databas connection endpoint"
+#   value       = module.dev_infra.database_endpoint
+# }
+
+output "bastion_ips" {
   description = "public ip address for bastion"
-  value       = module.dev_infra.bastion_public_ip
+  value       = module.dev_infra.bastion_ips
 }
 
-output "database_endpoint" {
-  description = "Databas connection endpoint"
-  value       = module.dev_infra.database_endpoint
+output "backend_ips" {
+  description = "Backend IPs"
+  value       = module.dev_infra.backend_ips
 }
 
-output "private_ips" {
-  description = "Backend Private IPs"
-  value       = module.dev_infra.private_ips
-}
-
-output "public_ips" {
-  description = "Backend Public IPs"
-  value       = module.dev_infra.public_ips
+output "frontend_ips" {
+  description = "Frontend IPs"
+  value       = module.dev_infra.frontend_ips
 }
 

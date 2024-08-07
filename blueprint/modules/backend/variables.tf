@@ -4,7 +4,13 @@ variable "instance_type" {}
 variable "security_group_ids" {}
 variable "private_subnet_ids" {}
 variable "user_data_script" {}
-variable "database_endpoint" {}
+variable "key_pair_name" {}
+variable "database_endpoint" {
+  description = "Database connection endpoint"
+  type        = string
+  default     = "N/A"
+}
+
 variable "alb_target_group_arns" {}
 
 variable "asg_name" {
@@ -16,13 +22,13 @@ variable "asg_name" {
 variable "desired_asg_capacity" {
   description = "Autoscalling Group desired capacity"
   type        = number
-  default     = 1
+  default     = 2
 }
 
 variable "max_asg_capacity" {
   description = "Autoscalling Group max capacity"
   type        = number
-  default     = 1
+  default     = 2
 }
 
 variable "min_asg_capacity" {

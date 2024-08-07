@@ -15,13 +15,3 @@ output "public_ips" {
   description = "public ip address"
   value       = length(data.aws_instances.instances.public_ips) > 0 ? join(", ", data.aws_instances.instances.public_ips) : "N/A"
 }
-
-# output "private_ip" {
-#   description = "private ip address"
-#   value       = length(aws_instance.backend.private_ip) > 0 ? aws_instance.backend.private_ip : "N/A"
-# }
-
-# output "public_ip" {
-#   description = "public ip address"
-#   value       = length(aws_instance.backend.public_ip ) > 0 ? aws_instance.backend.public_ip : "N/A"
-# }
