@@ -10,15 +10,15 @@ output "alb_dns" {
 
 output "bastion_ips" {
   description = "Bastion IPs"
-  value = "Public: ${module.bastion.public_ip} - Private: ${module.bastion.private_ip}"
+  value       = "Public: ${module.bastion.public_ip} - Private: ${module.bastion.private_ip}"
 }
 
 output "backend_ips" {
   description = "Backend IPs"
-  value = "Public: ${module.backend.public_ips} - Private: ${module.backend.private_ips}"
+  value       = "Public: ${module.backend.public_ips} - Private: ${module.backend.private_ips}"
 }
 
 output "frontend_ips" {
   description = "Frontend IPs"
-  value = "Public: ${module.frontend.public_ips} - Private: ${module.frontend.private_ips}"
+  value       = "Public: ${module.frontend.public_ips} - Private: ${module.frontend.private_ips}"
 }

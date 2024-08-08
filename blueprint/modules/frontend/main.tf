@@ -53,8 +53,8 @@ resource "aws_autoscaling_group" "asg" {
     propagate_at_launch = true
   }
   tag {
-    key = "Owner"
-    value = "itadmin"
+    key                 = "Owner"
+    value               = "itadmin"
     propagate_at_launch = true
   }
 }

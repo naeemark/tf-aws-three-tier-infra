@@ -11,7 +11,7 @@ variable "region" {
 variable "profile" {
   type        = string
   description = "AWS profile configured in aws-cli"
-  default = "muaksite"
+  default     = "muaksite"
 }
 
 variable "vpc_cidr_block" {

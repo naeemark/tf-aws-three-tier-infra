@@ -1,5 +1,5 @@
 provider "aws" {
-  region = var.region
+  region  = var.region
   profile = var.profile
 }
 
@@ -63,15 +63,15 @@ module "load_balancer" {
 
 # Backend
 module "backend" {
-  source             = "./modules/backend"
-  ami_id             = var.backend_ami_id
-  instance_type      = var.backend_instance_type
-  security_group_ids = [module.security_groups.backend_sg_id]
-  private_subnet_ids = [module.network.private_subnet_1_id, module.network.private_subnet_2_id]
+  source                = "./modules/backend"
+  ami_id                = var.backend_ami_id
+  instance_type         = var.backend_instance_type
+  security_group_ids    = [module.security_groups.backend_sg_id]
+  private_subnet_ids    = [module.network.private_subnet_1_id, module.network.private_subnet_2_id]
   alb_target_group_arns = [module.load_balancer.backend_alb_target_group_arn]
-  key_pair_name       = var.key_pair_name
-  user_data_script   = filebase64("${path.module}/../scripts/init_backend_server.sh")
-  tags               = local.tags
+  key_pair_name         = var.key_pair_name
+  user_data_script      = filebase64("${path.module}/../scripts/init_backend_server.sh")
+  tags                  = local.tags
   depends_on = [
     module.network,
     module.security_groups,
@@ -87,10 +87,10 @@ module "frontend" {
   security_group_ids    = [module.security_groups.frontend_sg_id]
   private_subnet_ids    = [module.network.private_subnet_1_id, module.network.private_subnet_2_id]
   alb_target_group_arns = [module.load_balancer.frontend_alb_target_group_arn]
-  key_pair_name       = var.key_pair_name
+  key_pair_name         = var.key_pair_name
   user_data_script      = filebase64("${path.module}/../scripts/init_frontend_server.sh")
   # backend_private_ip   = module.backend.private_ips
-  tags                  = local.tags
+  tags = local.tags
 
   depends_on = [
     module.network,
@@ -111,7 +111,7 @@ module "bastion" {
   instance_type          = var.backend_instance_type
   security_group_ids     = [module.security_groups.bastion_sg_id]
   public_subnet_id       = module.network.public_subnet_1_id
-  key_pair_name       = var.key_pair_name
+  key_pair_name          = var.key_pair_name
   user_data_script       = filebase64("${path.module}/../scripts/init_bastion_host.sh")
   tags                   = local.tags
 

@@ -3,7 +3,7 @@ data "aws_instances" "instances" {
     name   = "tag:aws:autoscaling:groupName"
     values = [var.asg_name]
   }
-  depends_on = [ aws_autoscaling_group.asg ]
+  depends_on = [aws_autoscaling_group.asg]
 }
 
 output "private_ips" {

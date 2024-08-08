@@ -120,12 +120,12 @@ resource "aws_security_group" "backend_sg" {
   description = var.backend_sg_description
   vpc_id      = var.vpc_id
 
-ingress {
+  ingress {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
     description = "HTTP"
-    security_groups = [ 
+    security_groups = [
       aws_security_group.bastion_sg.id
     ]
   }

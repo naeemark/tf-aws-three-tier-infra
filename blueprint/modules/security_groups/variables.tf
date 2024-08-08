@@ -3,8 +3,8 @@ variable "vpc_id" {}
 
 variable "default_cidr_blocks" {
   description = "Default CIDR Blocks with wildcard access"
-  type = list(string)
-  default = ["0.0.0.0/0"]
+  type        = list(string)
+  default     = ["0.0.0.0/0"]
 }
 
 variable "alb_sg_name" {
