@@ -22,3 +22,8 @@ output "private_subnet_2_id" {
   description = "ID of private subnet 2"
   value       = aws_subnet.private_subnet_2.id
 }
+
+output "bastion_eip_id" {
+  description = "ID of EIP for bastion host"
+  value       = aws_eip.bastion_eip.id
+}

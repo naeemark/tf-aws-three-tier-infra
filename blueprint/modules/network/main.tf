@@ -83,31 +83,36 @@ resource "aws_route_table_association" "internet_for_public_subnet_2" {
 }
 
 # Create EIP for NAT GW1
-resource "aws_eip" "eip_natgw1" {
+resource "aws_eip" "natgw1_eip" {
   count = "1"
-  tags  = merge({ Name = "bbeans-eip-1" }, var.tags)
+  tags  = merge({ Name = "bbeans-natgw-eip-1" }, var.tags)
+}
+
+# Create EIP for NAT GW2
+resource "aws_eip" "natgw2_eip" {
+  count = "1"
+  tags  = merge({ Name = "bbeans-natgw-eip-2" }, var.tags)
+}
+
+# Create EIP for Bastion Host
+resource "aws_eip" "bastion_eip" {
+  tags = merge({ Name = "bbeans-bastion-eip" }, var.tags)
 }
 
 # Create NAT gateway1
 resource "aws_nat_gateway" "natgateway_1" {
   count         = "1"
-  allocation_id = aws_eip.eip_natgw1[count.index].id
+  allocation_id = aws_eip.natgw1_eip[count.index].id
   subnet_id     = aws_subnet.public_subnet_1.id
-  tags          = merge({ Name = "bbeans-natgateway-1" }, var.tags)
-}
-
-# Create EIP for NAT GW2
-resource "aws_eip" "eip_natgw2" {
-  count = "1"
-  tags  = merge({ Name = "bbeans-eip-2" }, var.tags)
+  tags          = merge({ Name = "bbeans-natgw-eip-1" }, var.tags)
 }
 
 # Create NAT gateway2
 resource "aws_nat_gateway" "natgateway_2" {
   count         = "1"
-  allocation_id = aws_eip.eip_natgw2[count.index].id
+  allocation_id = aws_eip.natgw2_eip[count.index].id
   subnet_id     = aws_subnet.public_subnet_2.id
-  tags          = merge({ Name = "bbeans-natgateway-2" }, var.tags)
+  tags          = merge({ Name = "bbeans-natgw-eip-2" }, var.tags)
 }
 
 # Create private route table for private_subnet_1

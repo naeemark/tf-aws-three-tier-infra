@@ -5,18 +5,11 @@ variable "security_group_ids" {}
 variable "private_subnet_ids" {}
 variable "user_data_script" {}
 variable "key_pair_name" {}
-variable "database_endpoint" {
-  description = "Database connection endpoint"
-  type        = string
-  default     = "N/A"
-}
-
 variable "alb_target_group_arns" {}
 
-variable "asg_name" {
+variable "asg_name_prefix" {
   description = "Autoscalling Group name"
   type        = string
-  default     = "backend-asg"
 }
 
 variable "desired_asg_capacity" {
@@ -36,4 +29,3 @@ variable "min_asg_capacity" {
   type        = number
   default     = 1
 }
-

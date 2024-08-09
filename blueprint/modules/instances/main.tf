@@ -1,10 +1,16 @@
 ###########################################################
-# Backend Resources
+# Auto Scalling Group and Instances
 ###########################################################
+
+locals {
+  launch_config_name = "${var.asg_name_prefix}-asg-launch-config"
+  asg_name           = "${var.asg_name_prefix}-asg"
+  project_name       = "bbeans"
+}
 
 # Create Launch config
 resource "aws_launch_configuration" "backend_launch_config" {
-  name_prefix     = "backend-launch-config"
+  name_prefix     = local.launch_config_name
   image_id        = var.ami_id
   instance_type   = var.instance_type
   security_groups = var.security_group_ids
@@ -31,7 +37,7 @@ resource "aws_launch_configuration" "backend_launch_config" {
 
 # Create Auto Scaling Group
 resource "aws_autoscaling_group" "asg" {
-  name                 = var.asg_name
+  name                 = local.asg_name
   max_size             = var.max_asg_capacity
   min_size             = var.min_asg_capacity
   desired_capacity     = var.desired_asg_capacity
@@ -43,7 +49,7 @@ resource "aws_autoscaling_group" "asg" {
 
   tag {
     key                 = "Name"
-    value               = "bbeans-backend"
+    value               = "${local.project_name}-${var.asg_name_prefix}"
     propagate_at_launch = true
   }
   tag {
@@ -57,14 +63,3 @@ resource "aws_autoscaling_group" "asg" {
     propagate_at_launch = true
   }
 }
-
-# to use a single instance instead of AutoScallingGroup
-# resource "aws_instance" "backend" {
-#   ami                    = var.ami_id
-#   instance_type          = var.instance_type
-#   subnet_id              = var.private_subnet_ids[0]
-#   vpc_security_group_ids = var.security_group_ids
-#   key_name                    = var.key_pair_name
-#   user_data              = var.user_data_script
-#   tags                   = merge({ Name = "bbeans-backend" }, var.tags)
-# }

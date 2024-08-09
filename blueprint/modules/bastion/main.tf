@@ -11,11 +11,12 @@ resource "aws_instance" "bastion" {
   associate_public_ip_address = true
   key_name                    = var.key_pair_name
   user_data                   = var.user_data_script
-  tags                        = merge({ Name = "bbeans-bastion" }, var.tags)
+  tags                        = merge({ Name = "bbeans-bastion-host" }, var.tags)
+}
 
-  #  To pass arguments as vars
-  # user_data_base64 = base64encode("${templatefile("${path.module}/../scripts/init_bastion_host.sh", {
-  #   DB_ENDPOINT = var.database_endpoint
-  # })}")
+# Associate the Elastic IP with the EC2 instance
+resource "aws_eip_association" "eip_association" {
+  instance_id   = aws_instance.bastion[0].id
+  allocation_id = var.eip_id
 }
 

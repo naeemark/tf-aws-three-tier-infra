@@ -52,6 +52,12 @@ variable "backend_instance_type" {
   default     = "t2.micro"
 }
 
+variable "backend_asg_name_prefix" {
+  description = "Name to be used for autoscaling groups and ec2 instances"
+  type        = string
+  default     = "backend"
+}
+
 variable "frontend_ami_id" {
   description = "AMI ID for the frontend EC2 instances"
   type        = string
@@ -62,6 +68,12 @@ variable "frontend_instance_type" {
   description = "Instance type for the frontend EC2 instances"
   type        = string
   default     = "t2.micro"
+}
+
+variable "frontend_asg_name_prefix" {
+  description = "Name to be used for autoscaling groups and ec2 instances"
+  type        = string
+  default     = "frontend"
 }
 
 variable "required_database_setup" {
