@@ -4,7 +4,7 @@
 
 # Create security group for load balancer
 resource "aws_security_group" "alb_sg" {
-  name        = var.alb_sg_name
+  name        = "${var.alb_sg_name}-${var.tf_env}"
   description = var.alb_sg_description
   vpc_id      = var.vpc_id
 
@@ -38,7 +38,7 @@ resource "aws_security_group" "alb_sg" {
     cidr_blocks      = var.default_cidr_blocks
     ipv6_cidr_blocks = ["::/0"]
   }
-  tags = merge({ Name = "bbeans-alb-sg" }, var.tags)
+  tags = merge({ Name = "bbeans-alb-sg-${var.tf_env}" }, var.tags)
 }
 
 # Conditional block to allow http over port:80
@@ -75,13 +75,13 @@ resource "aws_security_group" "alb_sg" {
 #     ipv6_cidr_blocks = ["::/0"]
 #   }
 
-#   tags = merge({ Name = "bbeans-database-sg" }, var.tags)
+#   tags = merge({ Name = "bbeans-database-sg-${var.tf_env}" }, var.tags)
 
 # }
 
 # Bastion Security Group
 resource "aws_security_group" "bastion_sg" {
-  name        = "bastion-sg"
+  name        = "bastion-sg-${var.tf_env}"
   description = "sg for bastion"
   vpc_id      = var.vpc_id
   # count       = var.required_bastion_setup ? 1 : 0 # Condition to control Bastion Host Creation
@@ -110,13 +110,13 @@ resource "aws_security_group" "bastion_sg" {
     ipv6_cidr_blocks = ["::/0"]
   }
 
-  tags = merge({ Name = "bbeans-bastion-sg" }, var.tags)
+  tags = merge({ Name = "bbeans-bastion-sg-${var.tf_env}" }, var.tags)
 }
 
 
 # Create security group for backend
 resource "aws_security_group" "backend_sg" {
-  name        = var.backend_sg_name
+  name        = "${var.backend_sg_name}-${var.tf_env}"
   description = var.backend_sg_description
   vpc_id      = var.vpc_id
 
@@ -128,6 +128,14 @@ resource "aws_security_group" "backend_sg" {
     security_groups = [
       aws_security_group.bastion_sg.id
     ]
+  }
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    description = "HTTP"
+    cidr_blocks = var.default_cidr_blocks
   }
 
   ingress {
@@ -146,7 +154,7 @@ resource "aws_security_group" "backend_sg" {
     ipv6_cidr_blocks = ["::/0"]
   }
 
-  tags = merge({ Name = "bbeans-backend-sg" }, var.tags)
+  tags = merge({ Name = "bbeans-backend-sg-${var.tf_env}" }, var.tags)
 }
 
 # Conditional block to open port:22
@@ -163,7 +171,7 @@ resource "aws_security_group" "backend_sg" {
 
 # Create security group for frontend
 resource "aws_security_group" "frontend_sg" {
-  name        = var.frontend_sg_name
+  name        = "${var.frontend_sg_name}-${var.tf_env}"
   description = var.frontend_sg_description
   vpc_id      = var.vpc_id
 
@@ -193,7 +201,7 @@ resource "aws_security_group" "frontend_sg" {
     ipv6_cidr_blocks = ["::/0"]
   }
 
-  tags = merge({ Name = "bbeans-frontend-sg" }, var.tags)
+  tags = merge({ Name = "bbeans-frontend-sg-${var.tf_env}" }, var.tags)
 }
 
 # Conditional block to open port:22

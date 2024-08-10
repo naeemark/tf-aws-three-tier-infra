@@ -1,3 +1,4 @@
+variable "tf_env" {}
 variable "tags" {}
 variable "ami_id" {}
 variable "instance_type" {}

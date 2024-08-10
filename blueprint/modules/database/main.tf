@@ -5,7 +5,7 @@
 
 # Create Subnet Group
 resource "aws_db_subnet_group" "db_subnet_group" {
-  name       = "db-subnet-group"
+  name       = "db-subnet-group-${var.tf_env}"
   subnet_ids = var.private_subnet_ids
 
   tags = var.tags
@@ -14,7 +14,7 @@ resource "aws_db_subnet_group" "db_subnet_group" {
 # Create RDS Instance
 resource "aws_db_instance" "rds" {
   count                   = var.required_database_setup ? 1 : 0
-  identifier              = "bbeans-database"
+  identifier              = "bbeans-database-${var.tf_env}"
   instance_class          = var.instance_class
   allocated_storage       = var.storage_allocation
   storage_type            = var.storage_type

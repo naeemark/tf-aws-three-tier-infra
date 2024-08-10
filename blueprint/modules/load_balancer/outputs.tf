@@ -12,3 +12,8 @@ output "backend_alb_target_group_arn" {
   description = "The ARN of the Load Balance Target Group"
   value       = aws_lb_target_group.backend_tg.arn
 }
+
+output "backend_alb_target_group_8000_arn" {
+  description = "The ARN of the Load Balance Target Group"
+  value       = aws_lb_target_group.backend_tg_8000.arn
+}

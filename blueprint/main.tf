@@ -14,6 +14,7 @@ module "network" {
   public_subnet_cidr_blocks  = var.public_subnet_cidr_blocks
   private_subnet_cidr_blocks = var.private_subnet_cidr_blocks
   tags                       = local.tags
+  tf_env                     = var.tf_env
 }
 
 # Setup Security Groups
@@ -26,6 +27,7 @@ module "security_groups" {
   frontend_sg_allow_ssh  = true
   backend_sg_allow_ssh   = true
   tags                   = local.tags
+  tf_env                 = var.tf_env
 
   depends_on = [
     module.network
@@ -39,6 +41,7 @@ module "load_balancer" {
   security_group_ids = [module.security_groups.alb_sg_id]
   public_subnet_ids  = [module.network.public_subnet_1_id, module.network.public_subnet_2_id]
   tags               = local.tags
+  tf_env             = var.tf_env
 
   depends_on = [
     module.network,
@@ -54,6 +57,7 @@ module "load_balancer" {
 #   private_subnet_ids      = [module.network.private_subnet_1_id, module.network.private_subnet_2_id]
 #   db_port                 = var.database_instance_port
 #   tags                    = local.tags
+#   tf_env = var.tf_env
 
 #   depends_on = [
 #     module.network,
@@ -68,11 +72,13 @@ module "backend" {
   instance_type         = var.backend_instance_type
   security_group_ids    = [module.security_groups.backend_sg_id]
   private_subnet_ids    = [module.network.private_subnet_1_id, module.network.private_subnet_2_id]
-  alb_target_group_arns = [module.load_balancer.backend_alb_target_group_arn]
+  alb_target_group_arns = [module.load_balancer.backend_alb_target_group_arn, module.load_balancer.backend_alb_target_group_8000_arn]
   asg_name_prefix       = var.backend_asg_name_prefix
   key_pair_name         = var.key_pair_name
   user_data_script      = filebase64("${path.module}/../scripts/init_backend_server.sh")
   tags                  = local.tags
+  tf_env                = var.tf_env
+
   depends_on = [
     module.network,
     module.security_groups,
@@ -92,6 +98,7 @@ module "frontend" {
   key_pair_name         = var.key_pair_name
   user_data_script      = filebase64("${path.module}/../scripts/init_frontend_server.sh")
   tags                  = local.tags
+  tf_env                = var.tf_env
 
   depends_on = [
     module.network,
@@ -116,6 +123,7 @@ module "bastion" {
   eip_id                 = module.network.bastion_eip_id
   user_data_script       = filebase64("${path.module}/../scripts/init_bastion_host.sh")
   tags                   = local.tags
+  tf_env                 = var.tf_env
 
   depends_on = [
     module.network,

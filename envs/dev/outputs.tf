@@ -1,6 +1,15 @@
+output "tf_env" {
+  description = "Infrastructure environemnt"
+  value       = var.tf_env
+}
+
 output "alb_dns_uri" {
   description = "Application Load Balancer URI"
   value       = "http://${module.dev_infra.alb_dns}"
+}
+output "alb_dns_api_uri" {
+  description = "Application Load Balancer URI"
+  value       = "http://${module.dev_infra.alb_dns}/api/"
 }
 
 output "alb_dns_backend_uri" {

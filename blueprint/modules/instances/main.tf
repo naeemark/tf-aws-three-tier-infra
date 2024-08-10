@@ -3,8 +3,8 @@
 ###########################################################
 
 locals {
-  launch_config_name = "${var.asg_name_prefix}-asg-launch-config"
-  asg_name           = "${var.asg_name_prefix}-asg"
+  launch_config_name = "${var.asg_name_prefix}-asg-launch-config-${var.tf_env}"
+  asg_name           = "${var.asg_name_prefix}-asg-${var.tf_env}"
   project_name       = "bbeans"
 }
 
@@ -49,7 +49,7 @@ resource "aws_autoscaling_group" "asg" {
 
   tag {
     key                 = "Name"
-    value               = "${local.project_name}-${var.asg_name_prefix}"
+    value               = "${local.project_name}-${var.asg_name_prefix}-${var.tf_env}"
     propagate_at_launch = true
   }
   tag {
