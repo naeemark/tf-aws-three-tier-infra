@@ -13,8 +13,8 @@ resource "aws_lb" "alb" {
 }
 
 # Create Target group
-resource "aws_lb_target_group" "backend_tg_8000" {
-  name     = "backend-tg-8000-${var.tf_env}"
+resource "aws_lb_target_group" "backend_tg" {
+  name     = "backend-tg-${var.tf_env}"
   port     = 8000
   protocol = "HTTP"
   vpc_id   = var.vpc_id
@@ -30,22 +30,22 @@ resource "aws_lb_target_group" "backend_tg_8000" {
   }
 }
 
-resource "aws_lb_target_group" "backend_tg" {
-  name     = "backend-tg-${var.tf_env}"
-  port     = 80
-  protocol = "HTTP"
-  vpc_id   = var.vpc_id
-  health_check {
-    interval            = 30
-    path                = "/api"
-    port                = 80
-    healthy_threshold   = 2
-    unhealthy_threshold = 2
-    timeout             = 10
-    protocol            = "HTTP"
-    matcher             = "200,202"
-  }
-}
+# resource "aws_lb_target_group" "backend_tg" {
+#   name     = "backend-tg-${var.tf_env}"
+#   port     = 80
+#   protocol = "HTTP"
+#   vpc_id   = var.vpc_id
+#   health_check {
+#     interval            = 30
+#     path                = "/api"
+#     port                = 80
+#     healthy_threshold   = 2
+#     unhealthy_threshold = 2
+#     timeout             = 10
+#     protocol            = "HTTP"
+#     matcher             = "200,202"
+#   }
+# }
 
 resource "aws_lb_target_group" "frontend_tg" {
   name     = "frontend-tg-${var.tf_env}"
@@ -77,35 +77,35 @@ resource "aws_lb_listener" "frontend_http" {
   }
 }
 
-resource "aws_lb_listener" "backend_http_8000" {
+# resource "aws_lb_listener_rule" "alb_listener_rule" {
+#   listener_arn = aws_lb_listener.frontend_http.arn
+#   tags         = merge({ Name = "backend-rule-${var.tf_env}" }, var.tags)
+#   priority     = 10
+
+#   condition {
+#     path_pattern {
+#       values = ["/api/*"]
+#     }
+#   }
+#   # condition { host_header { values = ["example.com"] } }
+
+#   action {
+#     type             = "forward"
+#     target_group_arn = aws_lb_target_group.backend_tg.arn
+#   }
+#   depends_on = [aws_lb_target_group.frontend_tg, aws_lb_target_group.backend_tg]
+# }
+
+resource "aws_lb_listener" "backend_http" {
   load_balancer_arn = aws_lb.alb.arn
   port              = "8000"
   protocol          = "HTTP"
   depends_on        = [aws_lb_target_group.frontend_tg, aws_lb_target_group.backend_tg]
-  tags              = merge({ Name = "backend-listener-http-8000-${var.tf_env}" }, var.tags)
+  tags              = merge({ Name = "backend-listener-http-${var.tf_env}" }, var.tags)
   default_action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.backend_tg_8000.arn
-  }
-}
-
-resource "aws_lb_listener_rule" "alb_listener_rule" {
-  listener_arn = aws_lb_listener.frontend_http.arn
-  tags         = merge({ Name = "backend-rule-${var.tf_env}" }, var.tags)
-  priority     = 10
-
-  condition {
-    path_pattern {
-      values = ["/api/*"]
-    }
-  }
-  # condition { host_header { values = ["example.com"] } }
-
-  action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.backend_tg.arn
   }
-  depends_on = [aws_lb_target_group.frontend_tg, aws_lb_target_group.backend_tg]
 }
 
 # =========================================================

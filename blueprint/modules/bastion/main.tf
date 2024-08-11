@@ -18,5 +18,6 @@ resource "aws_instance" "bastion" {
 resource "aws_eip_association" "eip_association" {
   instance_id   = aws_instance.bastion[0].id
   allocation_id = var.eip_id
+  depends_on    = [aws_instance.bastion]
 }
 

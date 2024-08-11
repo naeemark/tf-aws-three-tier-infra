@@ -15,10 +15,10 @@ terraform {
   ## [ Will work if the resources are already created ]
   #############################################################
   # backend "s3" {
-  #   bucket         = "bbeans-tfstate-bucket"
+  #   bucket         = "bbeans-tfstate-bucket-${var.tf_env}"
   #   key            = "envs/dev/terraform.tfstate"
   #   region         = var.region
-  #   dynamodb_table = "bbeans-state-locking-table"
+  #   dynamodb_table = "bbeans-state-locking-table-${var.tf_env}"
   #   encrypt        = true
   # }
 }
