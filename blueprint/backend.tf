@@ -3,7 +3,7 @@
 ###########################################################
 
 resource "aws_s3_bucket" "terraform_state_bucket" {
-  bucket        = "bbeans-tfstate-bucket-${var.tf_env}"
+  bucket        = "${var.tags.Project}-tfstate-bucket-${var.tf_env}"
   force_destroy = true
   tags          = var.tags
 }
@@ -25,7 +25,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "terraform_state_c
 }
 
 resource "aws_dynamodb_table" "terraform_locks_table" {
-  name         = "bbeans-state-locking-table-${var.tf_env}"
+  name         = "${var.tags.Project}-state-locking-table-${var.tf_env}"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "LockID"
   tags         = var.tags

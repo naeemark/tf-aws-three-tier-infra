@@ -4,17 +4,17 @@
 
 # Create ALB
 resource "aws_lb" "alb" {
-  name               = "bbeans-alb-${var.tf_env}"
+  name               = "${var.tags.Project}-alb-${var.tags.Env}"
   internal           = false
   load_balancer_type = "application"
   security_groups    = var.security_group_ids
   subnets            = var.public_subnet_ids
-  tags               = merge({ Name = "bbeans-alb-${var.tf_env}" }, var.tags)
+  tags               = merge({ Name = "${var.tags.Project}-alb-${var.tags.Env}" }, var.tags)
 }
 
 # Create Target group
 resource "aws_lb_target_group" "backend_tg" {
-  name     = "backend-tg-${var.tf_env}"
+  name     = "backend-tg-${var.tags.Env}"
   port     = 8000
   protocol = "HTTP"
   vpc_id   = var.vpc_id
@@ -31,7 +31,7 @@ resource "aws_lb_target_group" "backend_tg" {
 }
 
 # resource "aws_lb_target_group" "backend_tg" {
-#   name     = "backend-tg-${var.tf_env}"
+#   name     = "backend-tg-${var.tags.Env}"
 #   port     = 80
 #   protocol = "HTTP"
 #   vpc_id   = var.vpc_id
@@ -48,7 +48,7 @@ resource "aws_lb_target_group" "backend_tg" {
 # }
 
 resource "aws_lb_target_group" "frontend_tg" {
-  name     = "frontend-tg-${var.tf_env}"
+  name     = "frontend-tg-${var.tags.Env}"
   port     = 80
   protocol = "HTTP"
   vpc_id   = var.vpc_id
@@ -70,7 +70,7 @@ resource "aws_lb_listener" "frontend_http" {
   port              = "80"
   protocol          = "HTTP"
   depends_on        = [aws_lb_target_group.frontend_tg, aws_lb_target_group.backend_tg]
-  tags              = merge({ Name = "frontend-listener-http-${var.tf_env}" }, var.tags)
+  tags              = merge({ Name = "frontend-listener-http-${var.tags.Env}" }, var.tags)
   default_action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.frontend_tg.arn
@@ -79,7 +79,7 @@ resource "aws_lb_listener" "frontend_http" {
 
 # resource "aws_lb_listener_rule" "alb_listener_rule" {
 #   listener_arn = aws_lb_listener.frontend_http.arn
-#   tags         = merge({ Name = "backend-rule-${var.tf_env}" }, var.tags)
+#   tags         = merge({ Name = "backend-rule-${var.tags.Env}" }, var.tags)
 #   priority     = 10
 
 #   condition {
@@ -101,7 +101,7 @@ resource "aws_lb_listener" "backend_http" {
   port              = "8000"
   protocol          = "HTTP"
   depends_on        = [aws_lb_target_group.frontend_tg, aws_lb_target_group.backend_tg]
-  tags              = merge({ Name = "backend-listener-http-${var.tf_env}" }, var.tags)
+  tags              = merge({ Name = "backend-listener-http-${var.tags.Env}" }, var.tags)
   default_action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.backend_tg.arn
@@ -117,7 +117,7 @@ resource "aws_lb_listener" "backend_http" {
 #   port              = "443"
 #   protocol          = "HTTPS"
 #   depends_on        = [aws_lb_target_group.tg]
-#   tags              = merge({ Name = "bbeans-alb-listener-http-${var.tf_env}" }, var.tags)
+#   tags              = merge({ Name = "${var.tags.Project}-alb-listener-http-${var.tags.Env}" }, var.tags)
 
 #   default_action {
 #     type             = "forward"

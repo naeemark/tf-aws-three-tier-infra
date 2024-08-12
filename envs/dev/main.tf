@@ -12,7 +12,7 @@ terraform {
   ## PLEASE UNCOMMENT THIS CODE THEN RERUN `terraform init`
   ## TO SWITCH FROM LOCAL BACKEND TO REMOTE AWS BACKEND
 
-  ## [Commented code to avoid using remote backbackend]
+  ## [Commented code to avoid using remote backend]
   ## [ Will work if the resources are already created ]
   #############################################################
   backend "s3" {

@@ -43,7 +43,7 @@ variable "database_instance_port" {
 variable "backend_ami_id" {
   description = "AMI ID for the backend EC2 instance"
   type        = string
-  default     = "ami-07f19180600636c9c"
+  default     = "ami-0a9c1d3b5bceed0a9"
 }
 
 variable "backend_instance_type" {
@@ -61,7 +61,7 @@ variable "backend_asg_name_prefix" {
 variable "frontend_ami_id" {
   description = "AMI ID for the frontend EC2 instances"
   type        = string
-  default     = "ami-07f19180600636c9c"
+  default     = "ami-0a9c1d3b5bceed0a9"
 }
 
 variable "frontend_instance_type" {
@@ -91,8 +91,7 @@ variable "required_bastion_setup" {
 variable "bastion_ami_id" {
   description = "AMI ID for the bastion EC2 instance"
   type        = string
-  default     = "ami-07f19180600636c9c"
-  # default     = "ami-0809dd5035d9217b8" # base ami
+  default     = "ami-0a9c1d3b5bceed0a9"
 }
 
 variable "key_pair_name" {

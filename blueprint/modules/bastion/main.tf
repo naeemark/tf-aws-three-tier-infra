@@ -8,10 +8,11 @@ resource "aws_instance" "bastion" {
   instance_type               = var.instance_type
   subnet_id                   = var.public_subnet_id
   vpc_security_group_ids      = var.security_group_ids
+  iam_instance_profile        = var.iam_instance_profile_name
   associate_public_ip_address = true
   key_name                    = var.key_pair_name
   user_data                   = var.user_data_script
-  tags                        = merge({ Name = "bbeans-bastion-host-${var.tf_env}" }, var.tags)
+  tags                        = merge({ Name = "${var.tags.Project}-bastion-host-${var.tags.Env}" }, var.tags)
 }
 
 # Associate the Elastic IP with the EC2 instance

@@ -1,4 +1,3 @@
-variable "tf_env" {}
 variable "tags" {}
 variable "ami_id" {}
 variable "instance_type" {}
@@ -6,6 +5,7 @@ variable "security_group_ids" {}
 variable "private_subnet_ids" {}
 variable "user_data_script" {}
 variable "alb_target_group_arns" {}
+variable "iam_instance_profile_name" {}
 
 variable "asg_name_prefix" {
   description = "Autoscalling Group name"
