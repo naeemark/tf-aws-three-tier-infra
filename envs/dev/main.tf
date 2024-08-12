@@ -7,20 +7,22 @@ terraform {
   }
 
   #############################################################
+  ## KEEP IT COMMENTED WHILE DOING EXPERIMATATION
   ## AFTER RUNNING TERRAFORM APPLY (WITH LOCAL BACKEND)
-  ## PLEASE UNCOMMENT THIS CODE THEN RERUN TERRAFORM INIT
+  ## PLEASE UNCOMMENT THIS CODE THEN RERUN `terraform init`
   ## TO SWITCH FROM LOCAL BACKEND TO REMOTE AWS BACKEND
 
   ## [Commented code to avoid using remote backbackend]
   ## [ Will work if the resources are already created ]
   #############################################################
-  # backend "s3" {
-  #   bucket         = "bbeans-tfstate-bucket-${var.tf_env}"
-  #   key            = "envs/dev/terraform.tfstate"
-  #   region         = var.region
-  #   dynamodb_table = "bbeans-state-locking-table-${var.tf_env}"
-  #   encrypt        = true
-  # }
+  backend "s3" {
+    bucket         = "bbeans-tfstate-bucket-dev"
+    key            = "envs/dev/terraform.tfstate"
+    region         = "ap-southeast-2"
+    dynamodb_table = "bbeans-state-locking-table-dev"
+    encrypt        = true
+    profile        = "muaksite"
+  }
 }
 
 module "dev_infra" {
