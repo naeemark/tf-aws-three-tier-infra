@@ -1,3 +1,8 @@
+output "alb_arn" {
+  description = "The ARn of the load balancer"
+  value       = aws_lb.alb.arn
+}
+
 output "alb_dns" {
   description = "Exposes alb dns address"
   value       = aws_lb.alb.dns_name

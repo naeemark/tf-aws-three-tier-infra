@@ -52,6 +52,14 @@ module "load_balancer" {
   ]
 }
 
+# Web Application Firewall
+module "waf" {
+  source     = "./modules/waf"
+  alb_arn    = module.load_balancer.alb_arn
+  tags       = local.tags
+  depends_on = [module.load_balancer]
+}
+
 # Database
 # module "database" {
 #   source                  = "./modules/database"
@@ -82,7 +90,7 @@ module "backend" {
   tags                      = local.tags
 
   depends_on = [
-    # module.iam,
+    module.iam,
     module.network,
     module.security_groups,
     module.load_balancer
@@ -103,7 +111,7 @@ module "frontend" {
   tags                      = local.tags
 
   depends_on = [
-    # module.iam,
+    module.iam,
     module.network,
     module.security_groups,
     module.load_balancer,

@@ -77,11 +77,7 @@ resource "aws_iam_policy" "s3_access_policy" {
       {
         Effect = "Allow",
         Action = [
-          "s3:GetObject",
-          "s3:PutObject",
-          "s3:DeleteObject",
-          "s3:ListBucket",
-          "s3:ListAllMyBuckets"
+          "s3:*"
         ],
         Resource = [
           "arn:aws:s3:::*",
