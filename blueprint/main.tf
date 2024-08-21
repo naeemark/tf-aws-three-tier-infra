@@ -105,7 +105,7 @@ module "frontend" {
   security_group_ids        = [module.security_groups.frontend_sg_id]
   private_subnet_ids        = [module.network.private_subnet_1_id, module.network.private_subnet_2_id]
   iam_instance_profile_name = module.iam.instance_profile_name_frontend
-  alb_target_group_arns     = [module.load_balancer.frontend_alb_target_group_arn]
+  alb_target_group_arns     = [module.load_balancer.frontend_alb_target_group_80_arn, module.load_balancer.frontend_alb_target_group_81_arn]
   asg_name_prefix           = var.frontend_asg_name_prefix
   user_data_script          = filebase64("${path.module}/../scripts/init_frontend_server.sh")
   tags                      = local.tags

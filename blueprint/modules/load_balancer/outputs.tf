@@ -8,9 +8,14 @@ output "alb_dns" {
   value       = aws_lb.alb.dns_name
 }
 
-output "frontend_alb_target_group_arn" {
+output "frontend_alb_target_group_80_arn" {
   description = "The ARN of the Load Balance Target Group"
-  value       = aws_lb_target_group.frontend_tg.arn
+  value       = aws_lb_target_group.frontend_tg_80.arn
+}
+
+output "frontend_alb_target_group_81_arn" {
+  description = "The ARN of the Load Balance Target Group"
+  value       = aws_lb_target_group.frontend_tg_81.arn
 }
 
 output "backend_alb_target_group_arn" {

@@ -12,14 +12,23 @@ resource "aws_security_group" "alb_sg" {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
-    description = "HTTP"
+    description = "HTTP - Admin"
     cidr_blocks = var.default_cidr_blocks
   }
+
+  ingress {
+    from_port   = 81
+    to_port     = 81
+    protocol    = "tcp"
+    description = "HTTP - Therapist"
+    cidr_blocks = var.default_cidr_blocks
+  }
+
   ingress {
     from_port   = 8000
     to_port     = 8000
     protocol    = "tcp"
-    description = "HTTP Backend"
+    description = "HTTP - Backend"
     cidr_blocks = var.default_cidr_blocks
   }
 
@@ -181,7 +190,15 @@ resource "aws_security_group" "frontend_sg" {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
-    description = "HTTP"
+    description = "HTTP - Admin"
+    cidr_blocks = var.default_cidr_blocks
+  }
+
+  ingress {
+    from_port   = 81
+    to_port     = 81
+    protocol    = "tcp"
+    description = "HTTP - Therapist"
     cidr_blocks = var.default_cidr_blocks
   }
 
