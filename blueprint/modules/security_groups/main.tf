@@ -63,30 +63,30 @@ resource "aws_security_group" "alb_sg" {
 # }
 
 # Create security group for database
-# resource "aws_security_group" "database_sg" {
-#   name        = var.database_sg_name
-#   description = var.database_sg_description
-#   vpc_id      = var.vpc_id
+resource "aws_security_group" "database_sg" {
+  name        = var.database_sg_name
+  description = var.database_sg_description
+  vpc_id      = var.vpc_id
 
-#   ingress {
-#     description     = format("Allows Trafic on Port: %s", var.database_instance_port)
-#     from_port       = var.database_instance_port
-#     to_port         = var.database_instance_port
-#     protocol        = "tcp"
-#     security_groups = length(aws_security_group.bastion_sg) > 0 ? [aws_security_group.backend_sg.id, aws_security_group.bastion_sg[0].id] : [aws_security_group.backend_sg.id]
-#   }
+  ingress {
+    description     = format("Allows Trafic on Port: %s", var.database_instance_port)
+    from_port       = var.database_instance_port
+    to_port         = var.database_instance_port
+    protocol        = "tcp"
+    security_groups = [aws_security_group.backend_sg.id, aws_security_group.bastion_sg.id]
+  }
 
-#   egress {
-#     from_port        = 0
-#     to_port          = 0
-#     protocol         = "-1"
-#     cidr_blocks      = var.default_cidr_blocks
-#     ipv6_cidr_blocks = ["::/0"]
-#   }
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = var.default_cidr_blocks
+    ipv6_cidr_blocks = ["::/0"]
+  }
 
-#   tags = merge({ Name = "${var.tags.Project}-database-sg-${var.tags.Env}" }, var.tags)
+  tags = merge({ Name = "${var.tags.Project}-database-sg-${var.tags.Env}" }, var.tags)
 
-# }
+}
 
 # Bastion Security Group
 resource "aws_security_group" "bastion_sg" {

@@ -9,7 +9,7 @@ variable "required_database_setup" {}
 variable "instance_class" {
   description = "Databas instance class"
   type        = string
-  default     = "db.t2.micro"
+  default     = "db.t3.micro"
 }
 
 variable "storage_allocation" {

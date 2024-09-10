@@ -3,10 +3,10 @@ output "alb_dns" {
   value       = module.load_balancer.alb_dns
 }
 
-# output "database_endpoint" {
-#   description = "Databas connection endpoint"
-#   value       = module.database.endpoint
-# }
+output "database_endpoint" {
+  description = "Databas connection endpoint"
+  value       = module.database.endpoint
+}
 
 output "bastion_ips" {
   description = "Bastion IPs"

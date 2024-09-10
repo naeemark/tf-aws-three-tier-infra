@@ -24,6 +24,7 @@ resource "aws_db_instance" "rds" {
   db_name                 = var.db_user_name
   username                = var.db_user_name
   password                = var.db_password
+  parameter_group_name    = "default.postgres14"
   skip_final_snapshot     = true
   backup_retention_period = 0
   apply_immediately       = true

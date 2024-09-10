@@ -17,10 +17,10 @@ output "alb_dns_backend_uri" {
   value       = "http://${module.prod_infra.alb_dns}:8000"
 }
 
-# output "database_endpoint" {
-#   description = "Databas connection endpoint"
-#   value       = module.prod_infra.database_endpoint
-# }
+output "database_endpoint" {
+  description = "Databas connection endpoint"
+  value       = module.prod_infra.database_endpoint
+}
 
 output "bastion_ips" {
   description = "public ip address for bastion"

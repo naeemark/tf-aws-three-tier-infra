@@ -61,19 +61,19 @@ module "waf" {
 }
 
 # Database
-# module "database" {
-#   source                  = "./modules/database"
-#   required_database_setup = var.required_database_setup
-#   security_group_ids      = [module.security_groups.database_sg_id]
-#   private_subnet_ids      = [module.network.private_subnet_1_id, module.network.private_subnet_2_id]
-#   db_port                 = var.database_instance_port
-#   tags                    = local.tags
+module "database" {
+  source                  = "./modules/database"
+  required_database_setup = var.required_database_setup
+  security_group_ids      = [module.security_groups.database_sg_id]
+  private_subnet_ids      = [module.network.private_subnet_1_id, module.network.private_subnet_2_id]
+  db_port                 = var.database_instance_port
+  tags                    = local.tags
 
-#   depends_on = [
-#     module.network,
-#     module.security_groups
-#   ]
-# }
+  depends_on = [
+    module.network,
+    module.security_groups
+  ]
+}
 
 # Backend
 module "backend" {
