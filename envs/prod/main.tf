@@ -16,21 +16,21 @@ terraform {
   ## [ Will work if the resources are already created ]
   #############################################################
   backend "s3" {
-    bucket         = "bbeans-tfstate-bucket-dev"
-    key            = "envs/dev/terraform.tfstate"
+    bucket         = "bbeans-tfstate-bucket-prd"
+    key            = "envs/prd/terraform.tfstate"
     region         = "ap-southeast-2"
-    dynamodb_table = "bbeans-state-locking-table-dev"
+    dynamodb_table = "bbeans-state-locking-table-prd"
     encrypt        = true
-    profile        = "muaksite"
+    profile        = "bbeans"
   }
 }
 
-module "dev_infra" {
+module "prod_infra" {
   source                  = "../../blueprint"
   tf_env                  = var.tf_env
   region                  = var.region
   env_ami_id              = var.env_ami_id
-  profile                 = "muaksite"
-  required_database_setup = false # Controls RDS instance Setup
-  required_bastion_setup  = true  # Controls Bastion Host Setup
+  profile                 = "bbeans"
+  required_database_setup = true # Controls RDS instance Setup
+  required_bastion_setup  = true # Controls Bastion Host Setup
 }

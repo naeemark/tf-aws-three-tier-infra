@@ -68,7 +68,6 @@ module "waf" {
 #   private_subnet_ids      = [module.network.private_subnet_1_id, module.network.private_subnet_2_id]
 #   db_port                 = var.database_instance_port
 #   tags                    = local.tags
-#   tf_env = var.tf_env
 
 #   depends_on = [
 #     module.network,
@@ -79,7 +78,7 @@ module "waf" {
 # Backend
 module "backend" {
   source                    = "./modules/instances"
-  ami_id                    = var.backend_ami_id
+  ami_id                    = var.env_ami_id
   instance_type             = var.backend_instance_type
   security_group_ids        = [module.security_groups.backend_sg_id]
   private_subnet_ids        = [module.network.private_subnet_1_id, module.network.private_subnet_2_id]
@@ -100,7 +99,7 @@ module "backend" {
 # Frontend (Autoscalling Group)
 module "frontend" {
   source                    = "./modules/instances"
-  ami_id                    = var.frontend_ami_id
+  ami_id                    = var.env_ami_id
   instance_type             = var.frontend_instance_type
   security_group_ids        = [module.security_groups.frontend_sg_id]
   private_subnet_ids        = [module.network.private_subnet_1_id, module.network.private_subnet_2_id]
@@ -126,7 +125,7 @@ module "frontend" {
 module "bastion" {
   source                    = "./modules/bastion"
   required_bastion_setup    = var.required_bastion_setup
-  ami_id                    = var.bastion_ami_id
+  ami_id                    = var.env_ami_id
   instance_type             = var.backend_instance_type
   security_group_ids        = [module.security_groups.bastion_sg_id]
   public_subnet_id          = module.network.public_subnet_1_id

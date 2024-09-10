@@ -1,7 +1,7 @@
 variable "tf_env" {
   description = "The environment name abbrivation"
   type        = string
-  default     = "dev"
+  default     = "prd"
 }
 
 variable "region" {
@@ -12,6 +12,6 @@ variable "region" {
 
 variable "env_ami_id" {
   type        = string
-  default     = "ami-0a9c1d3b5bceed0a9"
+  default     = "ami-01371af0ade386e93"
   description = "AMI ID for the EC2 instance"
 }

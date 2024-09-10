@@ -27,19 +27,19 @@ variable "storage_type" {
 variable "db_engine" {
   description = "Databas Engine"
   type        = string
-  default     = "mysql"
+  default     = "postgres"
 }
 
 variable "db_engine_version" {
   description = "Databas Engine Version"
   type        = string
-  default     = "5.7"
+  default     = "14"
 }
 
 variable "db_user_name" {
   description = "Databas User Name"
   type        = string
-  default     = "admin"
+  default     = "postgres"
 }
 
 variable "db_password" {
